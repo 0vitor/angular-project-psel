@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Alice Silva",
+    "email": "alice@gmail.com",
+    "role": "Developer",
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Bruno Roger",
+    "email": "bruno@gmail.com",
+    "role": "QA",
+    "active": false
+  },
+  {
+    "id": 3,
+    "name": "Carlos Lima",
+    "email": "carlos@gmail.com",
+    "role": "Designer",
+    "active": true
+  },
+  {
+    "id": 4,
+    "name": "Daniela Costa",
+    "email": "daniela@gmail.com",
+    "role": "Dev",
+    "active": true
+  }
+]
