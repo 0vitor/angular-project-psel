@@ -3,14 +3,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #007bff;
-  color: white;
+  border-bottom: 1px solid #ccc;
 }
-nav a {
-  margin-left: 1rem;
-  color: white;
-  text-decoration: none;
+
+.header button {
+  padding: 1rem;
 }
-nav a:hover {
-  text-decoration: underline;
+
+.btn-employees {
+  margin-right: 1rem;
 }
