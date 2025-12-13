@@ -1,9 +1,15 @@
 <div class="toolbar">
-  <select [(ngModel)]="searchField">
+  <button pButton sevetiry="secondary" type="button" label="Buscar" (click)="onSearch()"></button>
+  <input
+    class="input-text"
+    pInputText
+    type="text"
+    [(ngModel)]="q"
+    placeholder="Buscar por nome, email ou id"
+  />
+  <select class="filter" [(ngModel)]="searchField">
     <option *ngFor="let field of searchOptions" [value]="field">{{ field | titlecase }}</option>
   </select>
-  <input pInputText type="text" [(ngModel)]="q" placeholder="Buscar por nome ou email" />
-  <button pButton type="button" label="Buscar" (click)="onSearch()"></button>
 </div>
 
 <p *ngIf="loading">Carregando...</p>
@@ -26,12 +32,13 @@
       <td>{{ e.role }}</td>
       <td>{{ e.active ? 'Sim' : 'Não' }}</td>
       <td>
-        <button pButton type="button" class="btn-edit" label="Editar" (click)="onEdit(e)"></button>
+        <button pButton label="Editar" class="btn-edit" type="button" (click)="onEdit(e)"></button>
         <button
           pButton
-          type="button"
-          class="btn-delete"
           label="Excluir"
+          type="button"
+          severity="danger"
+          class="btn-delete"
           (click)="onDelete(e)"
         ></button>
       </td>

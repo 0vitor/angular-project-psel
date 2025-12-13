@@ -80,8 +80,12 @@ export class EmployeesListComponent implements OnInit {
 
     this.employeeService.delete(e.id).subscribe({
       next: () => {
+        this.employees = this.employees.filter((emp) => emp.id !== e.id);
         this.notify.success('Funcionário removido com sucesso');
-        this.load();
+
+        if (this.employees.length === 0) {
+          this.notify.warning('Nenhum funcionário encontrado');
+        }
       },
       error: () => {
         this.notify.error('Erro ao excluir funcionário');

@@ -1,0 +1,30 @@
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  margin: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.input-text {
+  flex-grow: 5;
+}
+
+.filter {
+  flex-grow: 1;
+  border-radius: 6px;
+}
+
+.btn-edit {
+  background-color: rgb(233, 218, 80);
+  margin-right: 0.5rem;
+}
+
+.btn-edit:hover {
+  background-color: rgb(219, 205, 73);
+  margin-right: 0.5rem;
+}
+
+p-table {
+  border-top: 1px solid #ccc;
+}
