@@ -1,0 +1,42 @@
+<div class="toolbar">
+  <select [(ngModel)]="searchField">
+    <option *ngFor="let field of searchOptions" [value]="field">{{ field | titlecase }}</option>
+  </select>
+  <input pInputText type="text" [(ngModel)]="q" placeholder="Buscar por nome ou email" />
+  <button pButton type="button" label="Buscar" (click)="onSearch()"></button>
+</div>
+
+<p *ngIf="loading">Carregando...</p>
+<p *ngIf="error" class="error">{{ error }}</p>
+
+<p-table *ngIf="!loading && employees.length" [value]="employees">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Função</th>
+      <th>Ativo</th>
+      <th>Ações</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-e>
+    <tr>
+      <td>{{ e.name }}</td>
+      <td>{{ e.email }}</td>
+      <td>{{ e.role }}</td>
+      <td>{{ e.active ? 'Sim' : 'Não' }}</td>
+      <td>
+        <button pButton type="button" class="btn-edit" label="Editar" (click)="onEdit(e)"></button>
+        <button
+          pButton
+          type="button"
+          class="btn-delete"
+          label="Excluir"
+          (click)="onDelete(e)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p *ngIf="!loading && employees.length === 0">Nenhum funcionário encontrado.</p>
