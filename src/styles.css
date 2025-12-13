@@ -1,0 +1,16 @@
+@import 'ngx-toastr/toastr';
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.main > app-employee-list {
+  flex: 1;
+}
