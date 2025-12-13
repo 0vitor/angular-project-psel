@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div>
+    <label>Nome</label>
+    <input formControlName="name" />
+    <div *ngIf="f['name'].touched && f['name'].invalid">Nome é obrigatório.</div>
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input formControlName="email" />
+    <div *ngIf="f['email'].touched && f['email'].invalid">
+      <div *ngIf="f['email'].errors?.['required']">Email é obrigatório.</div>
+      <div *ngIf="f['email'].errors?.['email']">Formato de email inválido.</div>
+    </div>
+  </div>
+
+  <div>
+    <label>Função</label>
+    <input formControlName="role" />
+    <div *ngIf="f['role'].touched && f['role'].invalid">Função é obrigatória.</div>
+  </div>
+
+  <div>
+    <label><input type="checkbox" formControlName="active" /> Ativo</label>
+  </div>
+
+  <div *ngIf="error">{{ error }}</div>
+
+  <button type="submit" [disabled]="loading">Salvar</button>
+  <button type="button" (click)="cancel()">Cancelar</button>
+</form>

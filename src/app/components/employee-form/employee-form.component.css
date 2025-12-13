@@ -1,0 +1,17 @@
+form {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+label {
+  font-weight: 600;
+}
+input[type='text'],
+input[type='email'],
+input {
+  padding: 0.4rem;
+}
+div {
+  display: block;
+}
