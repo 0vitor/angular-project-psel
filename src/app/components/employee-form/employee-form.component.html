@@ -1,31 +1,46 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <div>
-    <label>Nome</label>
-    <input formControlName="name" />
-    <div *ngIf="f['name'].touched && f['name'].invalid">Nome é obrigatório.</div>
+<form class="form" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Nome -->
+  <div class="form-group">
+    <label for="name">Nome</label>
+    <input id="name" type="text" formControlName="name" />
+    <small *ngIf="f['name'].touched && f['name'].invalid" class="error">
+      Nome é obrigatório.
+    </small>
   </div>
 
-  <div>
-    <label>Email</label>
-    <input formControlName="email" />
-    <div *ngIf="f['email'].touched && f['email'].invalid">
-      <div *ngIf="f['email'].errors?.['required']">Email é obrigatório.</div>
-      <div *ngIf="f['email'].errors?.['email']">Formato de email inválido.</div>
-    </div>
+  <!-- Email -->
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" type="text" formControlName="email" />
+    <small *ngIf="f['email'].touched && f['email'].invalid" class="error">
+      <span *ngIf="f['email'].errors?.['required']">Email é obrigatório.</span>
+      <span *ngIf="f['email'].errors?.['email']">Formato de email inválido.</span>
+    </small>
   </div>
 
-  <div>
-    <label>Função</label>
-    <input formControlName="role" />
-    <div *ngIf="f['role'].touched && f['role'].invalid">Função é obrigatória.</div>
+  <!-- Função -->
+  <div class="form-group">
+    <label for="role">Função</label>
+    <input id="role" type="text" formControlName="role" />
+    <small *ngIf="f['role'].touched && f['role'].invalid" class="error">
+      Função é obrigatória.
+    </small>
   </div>
 
-  <div>
-    <label><input type="checkbox" formControlName="active" /> Ativo</label>
+  <!-- Ativo -->
+  <div class="form-group">
+    <label for="active">Ativo</label>
+    <input id="active" type="checkbox" formControlName="active" />
   </div>
 
-  <div *ngIf="error">{{ error }}</div>
+  <!-- Erro geral -->
+  <div *ngIf="error">
+    <small class="error">{{ error }}</small>
+  </div>
 
-  <button type="submit" [disabled]="loading">Salvar</button>
-  <button type="button" (click)="cancel()">Cancelar</button>
+  <!-- Botões -->
+  <div class="form-actions">
+    <button type="submit" [disabled]="loading">Salvar</button>
+    <button type="button" (click)="cancel()">Cancelar</button>
+  </div>
 </form>

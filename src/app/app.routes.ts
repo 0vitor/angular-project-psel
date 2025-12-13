@@ -3,7 +3,8 @@ import { EmployeesListComponent } from './components/employees-list/employees-li
 import { EmployeeFormComponent } from './components/employee-form/employee-form.component';
 
 export const routes: Routes = [
-  // { path: 'employees', component: EmployeesListComponent },
+  { path: '', redirectTo: 'employees', pathMatch: 'full' },
+  { path: 'employees', component: EmployeesListComponent },
   { path: 'employees/new', component: EmployeeFormComponent },
-  // { path: 'employees/:id/edit', component: EmployeeFormComponent },
+  { path: 'employees/:id/edit', component: EmployeeFormComponent },
 ];
