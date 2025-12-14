@@ -10,7 +10,7 @@ describe('Employees CRUD (mocked)', () => {
   });
 
   it('should list employees', () => {
-    cy.mockarBuscarFuncionarios();
+    cy.mockListEmployees();
     cy.visit(baseUrl);
     cy.wait('@getEmployees');
 
@@ -21,9 +21,9 @@ describe('Employees CRUD (mocked)', () => {
   });
 
   it('should search employee by name', () => {
-    cy.mockarBuscarFuncionarios();
+    cy.mockListEmployees();
     cy.visit(baseUrl);
-    cy.mockarFiltrarFuncionarios();
+    cy.mockSearchEmployees();
 
     cy.get('input').type(employees[0].name);
     cy.contains('Buscar').click();
@@ -34,21 +34,40 @@ describe('Employees CRUD (mocked)', () => {
     cy.contains(employees[1].name).should('not.exist');
   });
 
-  it('should show empty state when search returns no results', () => {
-    cy.mockarBuscarFuncionarios();
+  it('should create a new employee and show success toast', () => {
+    cy.mockListEmployees();
+    cy.mockCreateEmployee();
+
     cy.visit(baseUrl);
-    cy.mockarNenhumFuncionarios();
+    cy.wait('@getEmployees');
+
+    cy.contains('Novo Funcionário').click();
+
+    cy.get('input[formcontrolname="name"]').type('Carla Mendes');
+    cy.get('input[formcontrolname="role"]').type('Designer');
+    cy.get('input[formcontrolname="email"]').type('Carla@gmail.com');
+
+    cy.contains('button', 'Salvar').should('not.be.disabled').click();
+    cy.wait('@createEmployee');
+
+    cy.contains('Funcionário criado com sucesso').should('be.visible');
+  });
+
+  it('should show empty state when search returns no results', () => {
+    cy.mockListEmployees();
+    cy.visit(baseUrl);
+    cy.mockEmptyEmployees();
 
     cy.get('input').type('Inexistente');
     cy.contains('Buscar').click();
-    cy.wait('@searchEmployees');
+    cy.wait('@emptyEmployees');
 
     cy.contains('Nenhum funcionário encontrado').should('be.visible');
   });
 
   it('should delete an employee and show success toast', () => {
-    cy.mockarBuscarFuncionarios();
-    cy.mockarDeletarFuncionario(1);
+    cy.mockListEmployees();
+    cy.mockDeleteEmployee(1);
 
     cy.visit(baseUrl);
     cy.wait('@getEmployees');
@@ -63,11 +82,11 @@ describe('Employees CRUD (mocked)', () => {
   });
 
   it('should edit an employee and show success toast', () => {
-    cy.mockarBuscarFuncionarios();
+    cy.mockListEmployees();
     cy.visit(baseUrl);
     cy.wait('@getEmployees');
 
-    cy.mockarEditarFuncionario();
+    cy.mockUpdateEmployee();
     cy.get('button').contains('Editar').first().click();
 
     cy.wait('@getOneEmployee');
@@ -86,7 +105,7 @@ describe('Employees CRUD (mocked)', () => {
   });
 
   it('should show friendly error message when API fails', () => {
-    cy.mockarErroFuncionarios();
+    cy.mockErrorEmployees();
     cy.visit(baseUrl);
 
     cy.wait('@getEmployeesError');

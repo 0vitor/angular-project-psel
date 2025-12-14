@@ -3,12 +3,13 @@
 declare global {
   namespace Cypress {
     interface Chainable {
-      mockarBuscarFuncionarios(fixtureFile?: string): Chainable<void>;
-      mockarFiltrarFuncionarios(fixtureFile?: string): Chainable<void>;
-      mockarErroFuncionarios(): Chainable<void>;
-      mockarCriarFuncionario(fixtureFile: string): Chainable<void>;
-      mockarEditarFuncionario(id: string | number, fixtureFile: string): Chainable<void>;
-      mockarDeletarFuncionario(id: string | number): Chainable<void>;
+      mockListEmployees(fixtureFile?: string): Chainable<void>;
+      mockSearchEmployees(fixtureFile?: string): Chainable<void>;
+      mockErrorEmployees(): Chainable<void>;
+      mockCreateEmployee(fixtureFile: string): Chainable<void>;
+      mockUpdateEmployee(id: string | number, fixtureFile: string): Chainable<void>;
+      mockDeleteEmployee(id: string | number): Chainable<void>;
+      mockEmptyEmployee(): Chainable<void>;
     }
   }
 }
@@ -16,7 +17,7 @@ declare global {
 export {};
 
 // Buscar funcionários
-Cypress.Commands.add('mockarBuscarFuncionarios', (fixtureFile = 'employees.json') => {
+Cypress.Commands.add('mockListEmployees', (fixtureFile = 'employees.json') => {
   cy.fixture(fixtureFile).then((employees) => {
     cy.intercept('GET', 'http://localhost:3000/employees', {
       statusCode: 200,
@@ -26,7 +27,7 @@ Cypress.Commands.add('mockarBuscarFuncionarios', (fixtureFile = 'employees.json'
 });
 
 // Filtrar funcionários
-Cypress.Commands.add('mockarFiltrarFuncionarios', (fixtureFile = 'employees-filtered.json') => {
+Cypress.Commands.add('mockSearchEmployees', (fixtureFile = 'employees-filtered.json') => {
   cy.fixture(fixtureFile).then((employees) => {
     cy.intercept('GET', 'http://localhost:3000/employees?*', {
       statusCode: 200,
@@ -36,17 +37,15 @@ Cypress.Commands.add('mockarFiltrarFuncionarios', (fixtureFile = 'employees-filt
 });
 
 // Empty funcionários
-Cypress.Commands.add('mockarNenhumFuncionarios', (fixtureFile = 'employees-empty.json') => {
-  cy.fixture(fixtureFile).then((employees) => {
-    cy.intercept('GET', 'http://localhost:3000/employees?*', {
-      statusCode: 200,
-      body: employees,
-    }).as('searchEmployees');
-  });
+Cypress.Commands.add('mockEmptyEmployees', () => {
+  cy.intercept('GET', 'http://localhost:3000/employees?*', {
+    statusCode: 200,
+    body: [],
+  }).as('emptyEmployees');
 });
 
 // Mock de erro
-Cypress.Commands.add('mockarErroFuncionarios', () => {
+Cypress.Commands.add('mockErrorEmployees', () => {
   cy.intercept('GET', 'http://localhost:3000/employees*', {
     statusCode: 500,
     body: { message: 'Internal Server Error' },
@@ -54,17 +53,14 @@ Cypress.Commands.add('mockarErroFuncionarios', () => {
 });
 
 // Criar funcionário
-Cypress.Commands.add('mockarCriarFuncionario', (fixtureFile) => {
-  cy.fixture(fixtureFile).then((employee) => {
-    cy.intercept('POST', 'http://localhost:3000/employees', {
-      statusCode: 201,
-      body: employee,
-    }).as('createEmployee');
-  });
+Cypress.Commands.add('mockCreateEmployee', () => {
+  cy.intercept('POST', 'http://localhost:3000/employees', {
+    statusCode: 201,
+  }).as('createEmployee');
 });
 
 // Editar funcionário
-Cypress.Commands.add('mockarEditarFuncionario', (fixtureFile = 'employees.json') => {
+Cypress.Commands.add('mockUpdateEmployee', (fixtureFile = 'employees.json') => {
   cy.fixture(fixtureFile).then((employee) => {
     cy.intercept('PUT', `http://localhost:3000/employees/1`, {
       statusCode: 200,
@@ -78,7 +74,7 @@ Cypress.Commands.add('mockarEditarFuncionario', (fixtureFile = 'employees.json')
 });
 
 // Deletar funcionário
-Cypress.Commands.add('mockarDeletarFuncionario', (id, fixtureFile = 'employee-deleted.json') => {
+Cypress.Commands.add('mockDeleteEmployee', (id, fixtureFile = 'employee-deleted.json') => {
   cy.fixture(fixtureFile).then((employees) => {
     cy.intercept('DELETE', `http://localhost:3000/employees/${id}`, {
       statusCode: 200,
