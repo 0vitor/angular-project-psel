@@ -12,12 +12,16 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
+import { SelectModule } from 'primeng/select';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-employees-list',
   standalone: true,
   templateUrl: './employees-list.component.html',
   styleUrls: ['./employees-list.component.css'],
+  providers: [ConfirmationService],
   imports: [
     CommonModule,
     FormsModule,
@@ -26,6 +30,8 @@ import { TableModule } from 'primeng/table';
     InputTextModule,
     ProgressSpinnerModule,
     MessageModule,
+    SelectModule,
+    ConfirmDialogModule,
   ],
 })
 export class EmployeesListComponent implements OnInit {
@@ -33,18 +39,47 @@ export class EmployeesListComponent implements OnInit {
   q = '';
   loading = false;
   error = '';
-
   searchField: SearchField = SearchField.Name;
-  searchOptions: SearchField[] = Object.values(SearchField);
+  searchOptions: SelectItem<SearchField>[] = [
+    { label: 'name', value: SearchField.Name },
+    { label: 'email', value: SearchField.Email },
+  ];
 
   constructor(
     private employeeService: EmployeeService,
     private router: Router,
-    private notify: NotificationService
+    private notify: NotificationService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.load();
+  }
+
+  confirm(event: Event, e: Employee) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Deseja realmente deletar este usuário?',
+      header: 'Excluir funcionário',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancelar',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Deletar',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.onDelete(e);
+      },
+      reject: () => {
+        this.notify.error('Não foi possivel deletar');
+      },
+    });
   }
 
   load() {
@@ -76,8 +111,6 @@ export class EmployeesListComponent implements OnInit {
   }
 
   onDelete(e: Employee) {
-    if (!confirm(`Remover ${e.name}?`)) return;
-
     this.employeeService.delete(e.id).subscribe({
       next: () => {
         this.employees = this.employees.filter((emp) => emp.id !== e.id);

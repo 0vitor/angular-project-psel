@@ -29,18 +29,24 @@
 
   <!-- Ativo -->
   <div class="form-group">
-    <label for="active">Ativo</label>
-    <input id="active" type="checkbox" formControlName="active" />
-  </div>
-
-  <!-- Erro geral -->
-  <div *ngIf="error">
-    <small class="error">{{ error }}</small>
+    <p-selectbutton
+      [allowEmpty]="false"
+      [options]="stateOptions"
+      formControlName="active"
+      aria-labelledby="basic"
+    />
   </div>
 
   <!-- Botões -->
   <div class="form-actions">
-    <button type="submit" [disabled]="loading">Salvar</button>
-    <button type="button" (click)="cancel()">Cancelar</button>
+    <p-button icon="pi pi-save" type="submit" label="Salvar" [disabled]="loading || !form.valid" />
+    <p-button
+      icon="pi pi-times"
+      variant="outlined"
+      severity="danger"
+      type="button"
+      label="Cancelar"
+      (click)="cancel()"
+    />
   </div>
 </form>

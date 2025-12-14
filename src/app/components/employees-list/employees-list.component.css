@@ -16,12 +16,6 @@
 }
 
 .btn-edit {
-  background-color: rgb(233, 218, 80);
-  margin-right: 0.5rem;
-}
-
-.btn-edit:hover {
-  background-color: rgb(219, 205, 73);
   margin-right: 0.5rem;
 }
 

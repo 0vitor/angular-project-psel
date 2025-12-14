@@ -10,11 +10,21 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../services/notification.service';
+import { ButtonModule } from 'primeng/button';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-employee-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    FormsModule,
+    ButtonModule,
+    SelectButtonModule,
+  ],
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.css'],
 })
@@ -28,6 +38,10 @@ export class EmployeeFormComponent implements OnInit {
   loading = false;
   error = '';
   private employeeId?: number;
+  stateOptions: SelectItem<boolean>[] = [
+    { label: 'ativo', value: true },
+    { label: 'inativo', value: false },
+  ];
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
