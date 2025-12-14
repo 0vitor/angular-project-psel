@@ -1,12 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "Alice Silva Editada",
-    "email": "alice@gmail.com",
-    "role": "Senior Developer",
-    "active": true
-  },
-  {
     "id": 2,
     "name": "Bruno Roger",
     "email": "bruno@gmail.com",

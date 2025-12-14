@@ -3,11 +3,11 @@
 declare global {
   namespace Cypress {
     interface Chainable {
-      mockarBuscarFuncionarios(employees?: any[]): Chainable<void>;
-      mockarFiltrarFuncionarios(employees?: any[]): Chainable<void>;
+      mockarBuscarFuncionarios(fixtureFile?: string): Chainable<void>;
+      mockarFiltrarFuncionarios(fixtureFile?: string): Chainable<void>;
       mockarErroFuncionarios(): Chainable<void>;
-      mockarCriarFuncionario(employee: any): Chainable<void>;
-      mockarEditarFuncionario(id: string | number, employee: any): Chainable<void>;
+      mockarCriarFuncionario(fixtureFile: string): Chainable<void>;
+      mockarEditarFuncionario(id: string | number, fixtureFile: string): Chainable<void>;
       mockarDeletarFuncionario(id: string | number): Chainable<void>;
     }
   }
@@ -15,21 +15,37 @@ declare global {
 
 export {};
 
-Cypress.Commands.add('mockarFiltrarFuncionarios', (employees = []) => {
-  cy.intercept('GET', 'http://localhost:3000/employees?*', {
-    statusCode: 200,
-    body: employees,
-  }).as('searchEmployees');
+// Buscar funcionários
+Cypress.Commands.add('mockarBuscarFuncionarios', (fixtureFile = 'employees.json') => {
+  cy.fixture(fixtureFile).then((employees) => {
+    cy.intercept('GET', 'http://localhost:3000/employees', {
+      statusCode: 200,
+      body: employees,
+    }).as('getEmployees');
+  });
 });
 
-Cypress.Commands.add('mockarBuscarFuncionarios', (employees = []) => {
-  cy.intercept('GET', 'http://localhost:3000/employees', {
-    statusCode: 200,
-    body: employees,
-  }).as('getEmployees');
+// Filtrar funcionários
+Cypress.Commands.add('mockarFiltrarFuncionarios', (fixtureFile = 'employees-filtered.json') => {
+  cy.fixture(fixtureFile).then((employees) => {
+    cy.intercept('GET', 'http://localhost:3000/employees?*', {
+      statusCode: 200,
+      body: employees,
+    }).as('searchEmployees');
+  });
 });
 
-// Mock para erro na listagem
+// Empty funcionários
+Cypress.Commands.add('mockarNenhumFuncionarios', (fixtureFile = 'employees-empty.json') => {
+  cy.fixture(fixtureFile).then((employees) => {
+    cy.intercept('GET', 'http://localhost:3000/employees?*', {
+      statusCode: 200,
+      body: employees,
+    }).as('searchEmployees');
+  });
+});
+
+// Mock de erro
 Cypress.Commands.add('mockarErroFuncionarios', () => {
   cy.intercept('GET', 'http://localhost:3000/employees*', {
     statusCode: 500,
@@ -37,30 +53,35 @@ Cypress.Commands.add('mockarErroFuncionarios', () => {
   }).as('getEmployeesError');
 });
 
-// Mock para criar funcionário
-Cypress.Commands.add('mockarCriarFuncionario', (employee) => {
-  cy.intercept('POST', 'http://localhost:3000/employees', {
-    statusCode: 201,
-    body: employee,
-  }).as('createEmployee');
+// Criar funcionário
+Cypress.Commands.add('mockarCriarFuncionario', (fixtureFile) => {
+  cy.fixture(fixtureFile).then((employee) => {
+    cy.intercept('POST', 'http://localhost:3000/employees', {
+      statusCode: 201,
+      body: employee,
+    }).as('createEmployee');
+  });
 });
 
-// Mock para editar funcionário
-Cypress.Commands.add('mockarEditarFuncionario', (id, employee) => {
-  cy.intercept('GET', `http://localhost:3000/employees/${id}`, {
-    statusCode: 200,
-    body: employee,
-  }).as('getEmployee');
+// Editar funcionário
+Cypress.Commands.add('mockarEditarFuncionario', (fixtureFile = 'employees.json') => {
+  cy.fixture(fixtureFile).then((employee) => {
+    cy.intercept('PUT', `http://localhost:3000/employees/1`, {
+      statusCode: 200,
+    }).as('updateEmployee');
 
-  cy.intercept('PUT', `http://localhost:3000/employees/${id}`, {
-    statusCode: 200,
-    body: employee,
-  }).as('updateEmployee');
+    cy.intercept('GET', `http://localhost:3000/employees/1`, {
+      statusCode: 200,
+      body: employee[0],
+    }).as('getOneEmployee');
+  });
 });
 
-// Mock para deletar funcionário
-Cypress.Commands.add('mockarDeletarFuncionario', (id) => {
-  cy.intercept('DELETE', `http://localhost:3000/employees/${id}`, {
-    statusCode: 200,
-  }).as('deleteEmployee');
+// Deletar funcionário
+Cypress.Commands.add('mockarDeletarFuncionario', (id, fixtureFile = 'employee-deleted.json') => {
+  cy.fixture(fixtureFile).then((employees) => {
+    cy.intercept('DELETE', `http://localhost:3000/employees/${id}`, {
+      statusCode: 200,
+    }).as('deleteEmployee');
+  });
 });

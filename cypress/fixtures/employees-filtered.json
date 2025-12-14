@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "name": "Alice Silva",
+    "email": "alice@gmail.com",
+    "role": "Developer",
+    "active": true
+  }
+]
