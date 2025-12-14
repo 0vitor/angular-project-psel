@@ -2,14 +2,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 0.4rem;
   border-bottom: 1px solid #ccc;
 }
 
-.header button {
+.header p-button {
   padding: 1rem;
-}
-
-.btn-employees {
-  margin-right: 1rem;
+  margin-right: 0.5rem;
 }
