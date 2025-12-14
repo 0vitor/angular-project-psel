@@ -12,7 +12,7 @@
     class="input-text"
     type="text"
     [(ngModel)]="q"
-    placeholder="Buscar por nome, email ou id"
+    placeholder="Buscar por nome ou email"
   />
   <p-select class="filter" [options]="searchOptions" [(ngModel)]="searchField"> </p-select>
 </div>
@@ -20,7 +20,14 @@
 <p *ngIf="loading">Carregando...</p>
 <p *ngIf="error" class="error">{{ error }}</p>
 
-<p-table *ngIf="!loading" [value]="employees">
+<p-table
+  *ngIf="!loading"
+  [value]="employees"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  stripedRows
+>
   <ng-template pTemplate="header">
     <tr>
       <th>Nome</th>

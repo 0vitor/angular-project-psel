@@ -41,7 +41,7 @@ export class EmployeesListComponent implements OnInit {
   error = '';
   searchField: SearchField = SearchField.Name;
   searchOptions: SelectItem<SearchField>[] = [
-    { label: 'name', value: SearchField.Name },
+    { label: 'nome', value: SearchField.Name },
     { label: 'email', value: SearchField.Email },
   ];
 
