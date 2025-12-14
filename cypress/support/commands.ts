@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
-
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 declare global {
   namespace Cypress {
     interface Chainable {
       mockListEmployees(fixtureFile?: string): Chainable<void>;
       mockSearchEmployees(fixtureFile?: string): Chainable<void>;
-      mockErrorEmployees(): Chainable<void>;
+      mockErrorEmployees(method: Method): Chainable<void>;
       mockCreateEmployee(): Chainable<void>;
       mockUpdateEmployee(fixtureFile?: string): Chainable<void>;
       mockDeleteEmployee(fixtureFile?: string): Chainable<void>;
@@ -45,11 +45,11 @@ Cypress.Commands.add('mockEmptyEmployees', () => {
 });
 
 // Mock de erro
-Cypress.Commands.add('mockErrorEmployees', () => {
-  cy.intercept('GET', 'http://localhost:3000/employees*', {
+Cypress.Commands.add('mockErrorEmployees', (method: Method) => {
+  cy.intercept(method, 'http://localhost:3000/employees*', {
     statusCode: 500,
     body: { message: 'Internal Server Error' },
-  }).as('getEmployeesError');
+  }).as('errorEmployees');
 });
 
 // Criar funcionário

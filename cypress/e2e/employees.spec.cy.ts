@@ -34,6 +34,22 @@ describe('Employees CRUD (mocked)', () => {
     cy.contains(employees[1].name).should('not.exist');
   });
 
+  it('should search employee by email', () => {
+    cy.mockListEmployees();
+    cy.visit(baseUrl);
+    cy.mockSearchEmployees();
+
+    cy.get('input').type(employees[0].email);
+    cy.contains('nome').click();
+    cy.contains('email').click();
+    cy.contains('Buscar').click();
+
+    cy.wait('@searchEmployees');
+
+    cy.contains(employees[0].email).should('be.visible');
+    cy.contains(employees[1].email).should('not.exist');
+  });
+
   it('should create a new employee and show success toast', () => {
     cy.mockListEmployees();
     cy.mockCreateEmployee();
@@ -53,6 +69,38 @@ describe('Employees CRUD (mocked)', () => {
     cy.contains('Funcionário criado com sucesso').should('be.visible');
   });
 
+  it('should not create a new employee if form not valid', () => {
+    cy.mockListEmployees();
+    cy.mockCreateEmployee();
+
+    cy.visit(baseUrl);
+    cy.wait('@getEmployees');
+
+    cy.contains('Novo Funcionário').click();
+
+    cy.get('input[formcontrolname="name"]').type('Carla Mendes');
+    cy.get('input[formcontrolname="role"]').type('Designer');
+
+    cy.contains('button', 'Salvar').should('be.disabled');
+  });
+
+  it('should show friendly error if not create employee', () => {
+    cy.mockListEmployees();
+    cy.mockErrorEmployees('POST');
+
+    cy.visit(baseUrl);
+    cy.wait('@getEmployees');
+
+    cy.contains('Novo Funcionário').click();
+
+    cy.get('input[formcontrolname="name"]').type('Carla Mendes');
+    cy.get('input[formcontrolname="role"]').type('Designer');
+    cy.get('input[formcontrolname="email"]').type('Carla@gmail.com');
+
+    cy.contains('button', 'Salvar').should('be.enabled').click();
+    cy.contains('Erro ao salvar funcionário').should('be.visible');
+  });
+
   it('should show empty state when search returns no results', () => {
     cy.mockListEmployees();
     cy.visit(baseUrl);
@@ -63,6 +111,20 @@ describe('Employees CRUD (mocked)', () => {
     cy.wait('@emptyEmployees');
 
     cy.contains('Nenhum funcionário encontrado').should('be.visible');
+  });
+
+  it('should show friendly error if not delete employee', () => {
+    cy.mockListEmployees();
+    cy.mockErrorEmployees('DELETE');
+
+    cy.visit(baseUrl);
+    cy.wait('@getEmployees');
+
+    cy.contains('Excluir').first().click();
+    cy.get('button').contains('Deletar').click();
+
+    cy.contains('Erro ao excluir funcionário').should('be.visible');
+    cy.contains(employees[0].name).should('be.visible');
   });
 
   it('should delete an employee and show success toast', () => {
@@ -105,10 +167,10 @@ describe('Employees CRUD (mocked)', () => {
   });
 
   it('should show friendly error message when API fails', () => {
-    cy.mockErrorEmployees();
+    cy.mockErrorEmployees('GET');
     cy.visit(baseUrl);
 
-    cy.wait('@getEmployeesError');
+    cy.wait('@errorEmployees');
 
     cy.contains('Erro ao carregar funcionários').should('be.visible');
   });
