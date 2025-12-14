@@ -7,12 +7,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { EmployeeService } from '../../services/employee.service';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from '../../services/notification.service';
 import { ButtonModule } from 'primeng/button';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SelectItem } from 'primeng/api';
+import { EmployeeService } from '@services/employee.service';
+import { NotificationService } from '@services/notification.service';
 
 @Component({
   selector: 'app-employee-form',

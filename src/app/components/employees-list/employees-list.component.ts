@@ -3,18 +3,18 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { Employee } from '../../models/employee';
-import { EmployeeService } from '../../services/employee.service';
-import { SearchField } from '../../models/search-field';
-import { NotificationService } from '../../services/notification.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
 import { SelectModule } from 'primeng/select';
-import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
+import { ConfirmationService, SelectItem } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { EmployeeService } from '@services/employee.service';
+import { Employee } from '@models/employee';
+import { SearchField } from '@models/search-field';
+import { NotificationService } from '@services/notification.service';
 
 @Component({
   selector: 'app-employees-list',
