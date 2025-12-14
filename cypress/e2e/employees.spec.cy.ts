@@ -67,7 +67,7 @@ describe('Employees CRUD (mocked)', () => {
 
   it('should delete an employee and show success toast', () => {
     cy.mockListEmployees();
-    cy.mockDeleteEmployee(1);
+    cy.mockDeleteEmployee();
 
     cy.visit(baseUrl);
     cy.wait('@getEmployees');
