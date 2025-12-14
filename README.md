@@ -78,6 +78,8 @@ Cypress will execute the automated tests against the running application.
 - **PrimeIcons**
 - **json-server** (Mock API)
 - **Cypress** (End-to-End Testing)
+- **ESLint** (code quality, import ordering and best practices)
+- **TypeScript Path Aliases (tsconfig paths)**
 
 ---
 
