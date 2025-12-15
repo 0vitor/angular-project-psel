@@ -9,7 +9,7 @@ Frontend application built with **Angular**, using a **mocked API with json-serv
 First, install the project dependencies:
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 ---
