@@ -3,17 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { ConfirmationService, SelectItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SelectModule } from 'primeng/select';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 
 import { Employee } from '@models/employee';
-import { SearchField } from '@models/search-field';
 import { EmployeeService } from '@services/employee.service';
 import { NotificationService } from '@services/notification.service';
 
@@ -33,6 +35,9 @@ import { NotificationService } from '@services/notification.service';
     MessageModule,
     SelectModule,
     ConfirmDialogModule,
+    CardModule,
+    IconFieldModule,
+    InputIconModule,
   ],
 })
 export class EmployeesListComponent implements OnInit {
@@ -40,11 +45,7 @@ export class EmployeesListComponent implements OnInit {
   q = '';
   loading = false;
   error = '';
-  searchField: SearchField = SearchField.Name;
-  searchOptions: SelectItem<SearchField>[] = [
-    { label: 'nome', value: SearchField.Name },
-    { label: 'email', value: SearchField.Email },
-  ];
+  searchField = '';
 
   constructor(
     private employeeService: EmployeeService,
@@ -55,6 +56,11 @@ export class EmployeesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  clear(table: Table) {
+    table.clear();
+    this.searchField = '';
   }
 
   confirm(event: Event, e: Employee) {
@@ -87,7 +93,7 @@ export class EmployeesListComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.employeeService.list(this.searchField, this.q).subscribe({
+    this.employeeService.list().subscribe({
       next: (data) => {
         if (data.length === 0) {
           this.notify.warning('Nenhum funcionário encontrado');
@@ -101,10 +107,6 @@ export class EmployeesListComponent implements OnInit {
         this.loading = false;
       },
     });
-  }
-
-  onSearch() {
-    this.load();
   }
 
   onEdit(e: Employee) {
